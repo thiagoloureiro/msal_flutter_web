@@ -40,13 +40,13 @@ void _loggerCallback(LogLevel level, String message, bool containsPii) {
   print('MSAL: [$level] $message');
 }
 
-void _redirectCallback(AuthException? error, [AuthResponse? response]) {
+void _redirectCallback(AuthException error, [AuthResponse response]) {
   if (error != null) {
     // Redirect login failed
     print('MSAL: ${error.errorCode}:${error.errorMessage}');
   } else {
     // Redirect login succeeded
-    print('Redirect login successful. name: ${response!.account!.name}');
+    print('Redirect login successful. name: ${response.account.name}');
   }
 }
 
@@ -56,7 +56,7 @@ void _redirectCallback(AuthException? error, [AuthResponse? response]) {
 class MyApp extends StatelessWidget {
   final UserAgentApplication userAgentApplication;
 
-  MyApp({required this.userAgentApplication});
+  MyApp({this.userAgentApplication});
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +77,8 @@ class MyHomePage extends StatefulWidget {
   final UserAgentApplication userAgentApplication;
 
   MyHomePage({
-    required this.userAgentApplication,
-    Key? key,
+    this.userAgentApplication,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -86,7 +86,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Account? _account;
+  Account _account;
 
   @override
   void initState() {
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _account = response.account;
       });
 
-      print('Popup login successful. name: ${_account!.name}');
+      print('Popup login successful. name: ${_account.name}');
     } on AuthException catch (ex) {
       print('MSAL: ${ex.errorCode}:${ex.errorMessage}');
     }
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
             if (_account != null) ...[
-              Text('Signed in as ${_account!.name}'),
+              Text('Signed in as ${_account.name}'),
               ElevatedButton(
                 child: Text('Logout'),
                 onPressed: _logout,
